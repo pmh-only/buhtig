@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, UseGuards, Res, NotFoundException, Query, UseInterceptors, UploadedFiles } from '@nestjs/common'
+import { Controller, Get, Post, Body, Param, Delete, UseGuards, Res, NotFoundException, Query, UseInterceptors, UploadedFiles, ForbiddenException } from '@nestjs/common'
 import { ReposService } from './repos.service'
 import { CreateRepoDto } from './dto/CreateRepoDto'
 import { PResBody } from '../types'
@@ -101,6 +101,22 @@ export class ReposController {
   }))
   public async createCommit (@Res({ passthrough: true }) res: Response, @Param('repoId') repoId: number, @UploadedFiles() files: Express.Multer.File[], @Body() body: CreateCommitDto): PResBody {
     const userId = res.locals.userId
+    const repo = await this.reposService.findRepo(repoId)
+
+    if (repo === undefined) {
+      throw new NotFoundException({
+        success: false,
+        message: 'Repository not found'
+      })
+    }
+
+    if (repo.userId !== userId) {
+      throw new ForbiddenException({
+        success: false,
+        message: 'Permission denied. committer must be repository owner.'
+      })
+    }
+
     await this.reposService.createCommit(userId, repoId, files, body)
 
     return {

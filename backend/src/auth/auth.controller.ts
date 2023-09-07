@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common'
 import { AuthGuard } from './auth.guard'
-import { ResBody } from '../types'
+import { PResBody, ResBody } from '../types'
 import { AuthService } from './auth.service'
 import { LoginByPasswordDto } from './dto/LoginByPassword.dto'
 import { Response } from 'express'
@@ -29,7 +29,7 @@ export class AuthController {
   }
 
   @Post('/by-pass')
-  public async loginByPassword (@Res({ passthrough: true }) res: Response, @Body() body: LoginByPasswordDto): Promise<ResBody> {
+  public async loginByPassword (@Res({ passthrough: true }) res: Response, @Body() body: LoginByPasswordDto): PResBody {
     const token = await this.authService.loginByPassword(body)
     res.cookie('SESSION_TOKEN', token)
 
@@ -39,12 +39,14 @@ export class AuthController {
   }
 
   @Post('/by-token')
-  public async loginByToken (@Res({ passthrough: true }) res: Response, @Body() body: LoginByTokenDto): Promise<ResBody> {
+  public async loginByToken (@Res({ passthrough: true }) res: Response, @Body() body: LoginByTokenDto): PResBody<{ token: string }> {
     const token = await this.authService.loginByToken(body)
-    res.cookie('SESSION_TOKEN', token)
 
     return {
-      success: true
+      success: true,
+      body: {
+        token
+      }
     }
   }
 }

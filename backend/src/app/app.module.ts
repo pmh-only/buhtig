@@ -1,5 +1,6 @@
 import { type MiddlewareConsumer, Module, type NestModule } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
+import { ServeStaticModule } from '@nestjs/serve-static'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { LoggerModule } from '../logger/logger.module'
 import { AuthMiddleware } from '../auth/auth.middleware'
@@ -7,6 +8,7 @@ import { AuthModule } from '../auth/auth.module'
 import { TokensModule } from '../tokens/tokens.module'
 import { UsersModule } from '../users/users.module'
 import { ReposModule } from '../repos/repos.module'
+import { HealthController } from './health.controller'
 
 @Module({
   imports: [
@@ -29,8 +31,13 @@ import { ReposModule } from '../repos/repos.module'
     AuthModule,
     TokensModule,
     UsersModule,
-    ReposModule
-  ]
+    ReposModule,
+    ServeStaticModule.forRoot({
+      serveRoot: '/objects',
+      rootPath: './files'
+    })
+  ],
+  controllers: [HealthController]
 })
 export class AppModule implements NestModule {
   public configure (consumer: MiddlewareConsumer): void {
