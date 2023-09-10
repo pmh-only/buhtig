@@ -16,6 +16,7 @@ func loadSubcommandFunctions () {
 	subcommandFunctions["get"] = getRepositoryFiles
 	subcommandFunctions["up"] = uploadChanges
 	subcommandFunctions["files"] = showDiffs
+	subcommandFunctions["log"] = showLogs
 }
 
 func retriveSubcommandFunction () func() {

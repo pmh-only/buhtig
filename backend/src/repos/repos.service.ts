@@ -84,7 +84,12 @@ export class ReposService {
   }
 
   public async getRepoCommit (repoId: number): Promise<Commit[]> {
-    return await this.commits.findBy({ repoId })
+    return await this.commits.find({
+      where: { repoId },
+      relations: {
+        user: true
+      }
+    })
   }
 
   public async createCommit (userId: number, repoId: number, files: Express.Multer.File[], createCommitDto: CreateCommitDto): Promise<void> {
