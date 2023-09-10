@@ -71,7 +71,7 @@ export class ReposController {
   }
 
   @Get(':repoId/files')
-  public async getRepoFiles (@Param('repoId') repoId: number, @Query('commit_id') commitIdRange = Number.MAX_SAFE_INTEGER): PResBody<File[]> {
+  public async getRepoFiles (@Param('repoId') repoId: number, @Query('commitId') commitIdRange = Number.MAX_SAFE_INTEGER): PResBody<File[]> {
     const files = await this.reposService.getRepoFiles(repoId, commitIdRange)
 
     return {

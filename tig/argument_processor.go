@@ -17,6 +17,7 @@ func loadSubcommandFunctions () {
 	subcommandFunctions["up"] = uploadChanges
 	subcommandFunctions["files"] = showDiffs
 	subcommandFunctions["log"] = showLogs
+	subcommandFunctions["down"] = downloadSpecificCommit
 }
 
 func retriveSubcommandFunction () func() {

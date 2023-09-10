@@ -61,15 +61,15 @@ func writeRepositoryHash(rawFileHashs map[string]string) {
 	}
 }
 
-func loadRepositoryMetadata() (repositoryId int, fileHashs map[string]string) {
+func loadRepositoryMetadata() (repositoryDirectory string, repositoryId int, fileHashs map[string]string) {
 	fileHashs = map[string]string{}
 
-	workingDirectory, err := os.Getwd()
+	repositoryDirectory, err := os.Getwd()
 	if err != nil {
 		log.Fatalln("Error: Cannot get current working directory.")
 	}
 
-	repoIdRaw, err := os.ReadFile(filepath.Join(workingDirectory, ".tig", "repoid"))
+	repoIdRaw, err := os.ReadFile(filepath.Join(repositoryDirectory, ".tig", "repoid"))
 	if err != nil {
 		log.Fatalln("Error: Failed to read repoid metadata. (Is this valid tig repository?)")
 	}
@@ -79,7 +79,7 @@ func loadRepositoryMetadata() (repositoryId int, fileHashs map[string]string) {
 		log.Fatalln("Error: Failed to read repoid metadata. metadata file has been corrupted.")
 	}
 
-	rawFileHashs, err := os.ReadFile(filepath.Join(workingDirectory, ".tig", "hashs"))
+	rawFileHashs, err := os.ReadFile(filepath.Join(repositoryDirectory, ".tig", "hashs"))
 	if err != nil {
 		log.Fatalln("Error: Failed to read repoid metadata. (Is this valid tig repository?)")
 	}

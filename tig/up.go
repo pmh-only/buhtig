@@ -22,7 +22,7 @@ func uploadChanges() {
 	registryDomain, loginId, loginToken := loadCredential()
 	sessionToken := retriveSessionTokenFromLogin(registryDomain, loginId, loginToken)
 
-	repositoryId, storedHashs := loadRepositoryMetadata()
+	_, repositoryId, storedHashs := loadRepositoryMetadata()
 	ignoreFileList := loadIgnoreFileList()
 	fileHashs := calculateFileHashs(ignoreFileList)
 

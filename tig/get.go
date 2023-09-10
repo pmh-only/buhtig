@@ -1,9 +1,7 @@
 package main
 
 import (
-	"crypto/sha256"
 	"fmt"
-	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -99,37 +97,5 @@ func getRepositoryFileList(registryDomain string, repositoryId int) (files map[s
 		files[v["logical"].(string)] = v["physical"].(string)
 	}
 
-	return
-}
-
-func downloadFileFromList (registryDomain, repositoryDirectory string, files map[string]string) (fileHashs map[string]string) {
-	fileHashs = map[string]string{}
-
-	for logical, physical := range files {
-		data, err := downloadHTTP(registryDomain + "/objects/" + physical)
-		if err != nil {
-			log.Fatalf("Error: Failed to retrive file data: %s", logical)
-		}
-
-		dataBytes, err := io.ReadAll(data)
-		if err != nil {
-			log.Fatalf("Error: Failed to retrive file data: %s", logical)
-		}
-
-		_ = os.MkdirAll(filepath.Dir(filepath.Join(repositoryDirectory, logical)), 0770)
-		err = os.WriteFile(filepath.Join(repositoryDirectory, logical), dataBytes, 0660)
-		if err != nil {
-			log.Fatalf("Error: Failed to save file data: %s", logical)
-		}
-
-		hasher := sha256.New()
-		hasher.Write(dataBytes)
-
-		hash := fmt.Sprintf("%x", hasher.Sum(nil))
-		fileHashs[logical] = hash
-
-		log.Printf("Downloaded: %s -> %s (%s)\n", logical, physical, hash)
-	}
-	
 	return
 }

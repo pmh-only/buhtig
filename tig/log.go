@@ -7,7 +7,7 @@ import (
 
 func showLogs() {
 	registryDomain, _, _ := loadCredential()
-	repositoryId, _ := loadRepositoryMetadata()
+	_, repositoryId, _ := loadRepositoryMetadata()
 
 	fetchCommitLogs(registryDomain, repositoryId)
 }
