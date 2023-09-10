@@ -10,9 +10,28 @@ the ultra-simple github clone. (for school hw.)
 
 ### `tig` - cli buhtig client.
 ```
-Login with personal token   -- tig auth
-Download source code        -- tig down <registry_domain> <repository_id>
-Commit & Upload source code -- tig up <commit_message>
-Show commit list            -- tig commits
-Revert code to prev. commit -- tig revert <commit_id>
+tig : the ultra-simple `git` clone project.
+
+Subcommands:
+        tig auth
+        Login registry with id, accesskey.
+
+        tig get <repository_id>
+        Create directory and download latest files from registry.
+
+        tig down [commit_id]
+        Download latest or specific commit files from registry.  
+        Warning! this command will discard all uploaded changes. 
+
+        tig up
+        Commit file changes and upload to registry
+
+        tig files
+        Calculate file changes.
+
+        tig log
+        Show commit histories
+
+        tig help
+        Show this messag
 ```
