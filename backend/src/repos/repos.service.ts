@@ -51,16 +51,36 @@ export class ReposService {
 
   public async getRepoFiles (repoId: number, commitIdRange: number): Promise<File[]> {
     const files = await this.files.createQueryBuilder('files')
-      .select('*')
-      .leftJoin('files.commit', 'commit')
-      .where('files.repoId = :repoId', { repoId })
-      .andWhere('files.commitId <= :commitIdRange', { commitIdRange })
-      .groupBy('files.logical')
-      .orderBy('files.logical', 'ASC')
-      .addOrderBy('files.commitId', 'DESC')
-      .getMany()
+      .select('sq.*')
+      .from((subQuery) => subQuery
+        .select(['files.*', 'commits.commits_message', 'commits.commits_createdat'])
+        .from(File, 'files')
+        .leftJoin('files.commit', 'commits')
+        .where('files.repoId = :repoId', { repoId })
+        .andWhere('files.commitId <= :commitIdRange', { commitIdRange })
+        .orderBy('files.logical', 'ASC')
+        .addOrderBy('files.commitId', 'DESC')
+        .limit(9999999), 'sq')
+      .groupBy('sq.files_logical')
+      .getRawMany()
 
-    return files.filter((file) => !file.isDeleted)
+    const parsedFiles = files.map((raw: any) => ({
+      id: raw.files_id,
+      physical: raw.files_physical,
+      logical: raw.files_logical,
+      isDeleted: raw.files_deleted === 1,
+      createdAt: new Date(raw.files_createdat),
+      userId: raw.users_id,
+      repoId: raw.repos_id,
+      commitId: raw.commits_id,
+      commit: {
+        id: raw.commits_id,
+        message: raw.commits_message,
+        createdAt: new Date(raw.commits_createdat)
+      }
+    }))
+
+    return parsedFiles.filter((file) => !file.isDeleted) as any
   }
 
   public async getRepoCommit (repoId: number): Promise<Commit[]> {
@@ -79,8 +99,16 @@ export class ReposService {
       commitId,
       repoId,
       physical: file.filename,
-      logical: file.originalname
+      logical: atob(file.originalname.replaceAll('.', '/'))
     }))
+
+    filesEntities.push(
+      ...JSON.parse(createCommitDto.deletedFiles).map((logical) => ({
+        commitId,
+        repoId,
+        logical,
+        isDeleted: true
+      })))
 
     await this.files.insert(filesEntities)
   }

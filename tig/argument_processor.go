@@ -14,6 +14,7 @@ func loadSubcommandFunctions () {
 	subcommandFunctions["help"] = showHelp
 	subcommandFunctions["auth"] = authRegistry
 	subcommandFunctions["get"] = getRepositoryFiles
+	subcommandFunctions["up"] = uploadChanges
 }
 
 func retriveSubcommandFunction () func() {

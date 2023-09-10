@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsString, MaxLength } from 'class-validator'
+import { IsJSON, IsString, MaxLength } from 'class-validator'
 
 export class CreateCommitDto {
   @IsString()
@@ -9,4 +9,8 @@ export class CreateCommitDto {
 
   @ApiProperty()
   public readonly files: Express.Multer.File[]
+
+  @IsJSON()
+  @ApiProperty()
+  public readonly deletedFiles: string
 }

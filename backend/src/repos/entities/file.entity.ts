@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsBoolean, IsDate, IsHexadecimal, IsInt, IsPositive, IsString, Length, MaxLength } from 'class-validator'
+import { IsBoolean, IsDate, IsHexadecimal, IsInt, IsOptional, IsPositive, IsString, Length, MaxLength } from 'class-validator'
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { Repo } from './repo.entity'
 import { Commit } from './commit.entity'
@@ -22,13 +22,14 @@ export class File {
     name: 'files_physical',
     type: 'char',
     length: 30,
-    nullable: false
+    nullable: true
   })
   @IsString()
+  @IsOptional()
   @Length(30)
   @ApiProperty()
   @IsHexadecimal()
-  public readonly physical: string
+  public readonly physical?: string
 
   @Column({
     name: 'files_logical',

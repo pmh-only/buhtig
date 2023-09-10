@@ -21,7 +21,7 @@ func getRepositoryFiles() {
 	fileHashs := downloadFileFromList(registryDomain, repositoryDirectory, repositoryFiles)
 	
 	writeRepositoryMetadata(repositoryDirectory, repositoryId, fileHashs)
-	log.Println("Download repository successful.")
+	log.Printf("Download repository successful: %s\n", repositoryDirectory)
 }
 
 func getRepositoryIdArgument() int {
@@ -105,7 +105,7 @@ func getRepositoryFileList(registryDomain string, repositoryId int) (files map[s
 func downloadFileFromList (registryDomain, repositoryDirectory string, files map[string]string) (fileHashs map[string]string) {
 	fileHashs = map[string]string{}
 
-	for physical, logical := range files {
+	for logical, physical := range files {
 		data, err := downloadHTTP(registryDomain + "/objects/" + physical)
 		if err != nil {
 			log.Fatalf("Error: Failed to retrive file data: %s", logical)
@@ -116,6 +116,7 @@ func downloadFileFromList (registryDomain, repositoryDirectory string, files map
 			log.Fatalf("Error: Failed to retrive file data: %s", logical)
 		}
 
+		_ = os.MkdirAll(filepath.Dir(filepath.Join(repositoryDirectory, logical)), 0770)
 		err = os.WriteFile(filepath.Join(repositoryDirectory, logical), dataBytes, 0660)
 		if err != nil {
 			log.Fatalf("Error: Failed to save file data: %s", logical)
@@ -131,22 +132,4 @@ func downloadFileFromList (registryDomain, repositoryDirectory string, files map
 	}
 	
 	return
-}
-
-func writeRepositoryMetadata(repositoryDirectory string, repositoryId int, rawFileHashs map[string]string) {
-	repoId := []byte(fmt.Sprintf("%d", repositoryId))
-	err := os.WriteFile(filepath.Join(repositoryDirectory, ".tig", "repoid"), repoId, 0660)
-	if err != nil {
-		log.Fatalln("Error: Failed to create metadata.")
-	}
-
-	fileHashs := ""
-	for logical, hash := range rawFileHashs {
-		fileHashs += fmt.Sprintf("%s %s\n", logical, hash)
-	}
-
-	err = os.WriteFile(filepath.Join(repositoryDirectory, ".tig", "hashs"), []byte(fileHashs), 0660)
-	if err != nil {
-		log.Fatalln("Error: Failed to create metadata.")
-	}
 }
