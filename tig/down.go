@@ -19,11 +19,17 @@ func downloadSpecificCommit() {
 
 	fileHashs := downloadFileFromList(registryDomain, repositoryDirectory, repositoryFiles)
 
-	beDiscardFiles := calculateCreatedFile(oldFileHashs, fileHashs)
+	beDiscardFiles := calculateCreatedFile(oldFileHashs, fileHashs, true)
 	discardChanges(repositoryDirectory, beDiscardFiles)
 	
 	writeRepositoryMetadata(repositoryDirectory, repositoryId, fileHashs)
-	log.Printf("Download commit #%d successful\n", commitId)
+
+	if isRestricted {
+		log.Printf("Download commit #%d successful\n", commitId)
+		return
+	}
+
+	log.Println("Download latest commit successful")
 }
 
 func getCommitId() (int, bool) {

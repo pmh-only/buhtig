@@ -23,12 +23,16 @@ func uploadChanges() {
 	sessionToken := retriveSessionTokenFromLogin(registryDomain, loginId, loginToken)
 
 	_, repositoryId, storedHashs := loadRepositoryMetadata()
+	
 	ignoreFileList := loadIgnoreFileList()
 	fileHashs := calculateFileHashs(ignoreFileList)
-
+	
+	latestCommitFiles := getRepositoryFileList(registryDomain, repositoryId)
 	fmt.Println()
-
+	
 	createdFiles, updatedFiles, deletedFiles := calculateFileDiff(fileHashs, storedHashs)
+	additionalDeletedFiles := findAdditionalDeletedFiles(fileHashs, latestCommitFiles)
+
 	commitMessage := promptCommitMessage()
 
 	writeCommit(
@@ -38,7 +42,8 @@ func uploadChanges() {
 		commitMessage,
 		createdFiles,
 		updatedFiles,
-		deletedFiles)
+		deletedFiles,
+		additionalDeletedFiles)
 
 	writeRepositoryHash(fileHashs)
 	log.Println("Write commit and upload successful.")
@@ -58,7 +63,17 @@ func promptCommitMessage() string {
 	return result
 }
 
-func writeCommit(registryDomain, sessionToken string, repositoryId int, commitMessage string, createdFiles, updatedFiles, rawDeletedFiles []string) {
+func findAdditionalDeletedFiles(fileHashs, latestCommitFiles map[string]string) (additionalDeletedFiles []string) {
+	for logical := range latestCommitFiles {
+		if _, ok := fileHashs[logical]; !ok {
+			additionalDeletedFiles = append(additionalDeletedFiles, logical)
+		}
+	}
+
+	return
+}
+
+func writeCommit(registryDomain, sessionToken string, repositoryId int, commitMessage string, createdFiles, updatedFiles, rawDeletedFiles, additionalDeletedFiles []string) {
 	upsertedFiles := append(createdFiles, updatedFiles...)
 	workingDirectory, err := os.Getwd()
 
@@ -70,7 +85,7 @@ func writeCommit(registryDomain, sessionToken string, repositoryId int, commitMe
 	bodyWriter := multipart.NewWriter(body)
 	deletedFiles := jsonbuilder.Array()
 
-	for _, deletedFile := range rawDeletedFiles {
+	for _, deletedFile := range append(rawDeletedFiles, additionalDeletedFiles...) {
 		deletedFiles.Push(deletedFile)
 	}
 

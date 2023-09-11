@@ -43,7 +43,7 @@ func getRepositoryName(registryDomain string, repositoryId int) string {
 	
 	success, err := jq.Bool("success")
 	if err != nil || !success {
-		log.Fatalf("Error: Repository Id `%d` not found.\n", repositoryId)
+		log.Fatalf("Error: Repository Id `%d` not found. (did you mean tig down?)\n", repositoryId)
 	}
 
 	name, err := jq.String("body", "name")
@@ -64,7 +64,7 @@ func createRepositoryDirectory(repositoryName string) string {
 	fileInfo, _ := os.Stat(directoryPath)
 	
 	if fileInfo != nil && fileInfo.IsDir() {
-		log.Fatalf("Error: Directory \"%s\" is already exists/permission denied. (did you mean tig down?)", repositoryName)
+		log.Fatalf("Error: Directory \"%s\" is already exists/permission denied. ", repositoryName)
 	}
 
 	err = os.Mkdir(directoryPath, 0770)

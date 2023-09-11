@@ -81,14 +81,14 @@ func calculateFileHashs(ignoreFileList []string) (fileHashs map[string]string) {
 }
 
 func calculateFileDiff(fileHashs, storedHashs map[string]string) (createdFile, updatedFile, deletedFile []string) {
-	createdFile = calculateCreatedFile(fileHashs, storedHashs)
+	createdFile = calculateCreatedFile(fileHashs, storedHashs, false)
 	updatedFile = calculateUpdatedFile(fileHashs, storedHashs)
 	deletedFile = calculateDeletedFile(fileHashs, storedHashs)
 
 	return
 }
 
-func calculateCreatedFile(fileHashs, storedHashs map[string]string) (createdFile []string) {
+func calculateCreatedFile(fileHashs, storedHashs map[string]string, isSlient bool) (createdFile []string) {
 	createdFile = []string{}
 
 	for logical := range fileHashs {
@@ -97,6 +97,11 @@ func calculateCreatedFile(fileHashs, storedHashs map[string]string) (createdFile
 		}
 
 		createdFile = append(createdFile, logical)
+
+		if isSlient {
+			continue
+		}
+
 		fmt.Printf("%s: file created.\n", logical)
 	}
 
