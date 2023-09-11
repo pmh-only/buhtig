@@ -12,12 +12,15 @@ import (
 
 func downloadSpecificCommit() {
 	registryDomain, _, _ := loadCredential()
-	repositoryDirectory, repositoryId, _ := loadRepositoryMetadata()
+	repositoryDirectory, repositoryId, oldFileHashs := loadRepositoryMetadata()
 
 	commitId, isRestricted := getCommitId()
 	repositoryFiles := getRepositoryFileListByCondition(registryDomain, repositoryId, isRestricted, commitId)
 
 	fileHashs := downloadFileFromList(registryDomain, repositoryDirectory, repositoryFiles)
+
+	beDiscardFiles := calculateCreatedFile(oldFileHashs, fileHashs)
+	discardChanges(repositoryDirectory, beDiscardFiles)
 	
 	writeRepositoryMetadata(repositoryDirectory, repositoryId, fileHashs)
 	log.Printf("Download commit #%d successful\n", commitId)
@@ -94,4 +97,13 @@ func downloadFileFromList (registryDomain, repositoryDirectory string, files map
 	}
 	
 	return
+}
+
+func discardChanges(repositoryDirectory string, files []string) {
+	for _, filePath := range files {
+		err := os.Remove(filepath.Join(repositoryDirectory, filePath))
+		if err != nil {
+			log.Printf("%s: failed to discard changes.", filePath)
+		}
+	}
 }
