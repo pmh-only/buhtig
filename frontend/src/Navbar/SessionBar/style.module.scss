@@ -1,0 +1,16 @@
+.link {
+  height: 17px;
+  display: flex;
+  gap: 5px;
+
+  a {
+    height: 17px;
+    border-bottom: 1px solid black;
+    padding-right: 5px;
+
+    &:hover {
+      background-color: black;
+      color: #e4e4e4;
+    }
+  }
+}
