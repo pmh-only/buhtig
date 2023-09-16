@@ -81,7 +81,7 @@ func loadRepositoryMetadata() (repositoryDirectory string, repositoryId int, fil
 
 	rawFileHashs, err := os.ReadFile(filepath.Join(repositoryDirectory, ".tig", "hashs"))
 	if err != nil {
-		log.Fatalln("Error: Failed to read repoid metadata. (Is this valid tig repository?)")
+		log.Fatalln("Error: Failed to read hashs metadata. (Is this valid tig repository?)")
 	}
 
 	fileHashLines := strings.Split(string(rawFileHashs[:]), "\n")

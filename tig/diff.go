@@ -40,6 +40,12 @@ func calculateFileHashs(ignoreFileList []string) (fileHashs map[string]string) {
 		}
 
 		ignoredIndex := slices.IndexFunc(ignoreFileList, func (ignoreFile string) bool {
+			if len(ignoreFile) < 1 {
+				return false
+			}
+
+			ignoreFile = strings.TrimSpace(ignoreFile)
+
 			matchs, err := regexp.MatchString(ignoreFile, simplifiedPath)
 			if err != nil {
 				return false
