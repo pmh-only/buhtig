@@ -1,5 +1,5 @@
-import { type FC, type ReactNode } from 'react'
 import { motion } from 'framer-motion'
+import { type FC, type ReactNode } from 'react'
 import style from './style.module.scss'
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 
 const SiteContainer: FC<Props> = ({ navbar, children }) =>
   <div className={style.outerContainer}>
-    <motion.div className={style.innerContainer}>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className={style.innerContainer}>
       {navbar}
       {children}
     </motion.div>

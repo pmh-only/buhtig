@@ -53,12 +53,12 @@ dependencies:
   rxjs:
     specifier: ^7.8.1
     version: 7.8.1
+  sha.js:
+    specifier: ^2.4.11
+    version: 2.4.11
   typeorm:
     specifier: ^0.3.17
     version: 0.3.17(mysql2@3.6.0)(ts-node@10.9.1)
-  whirlpool-hash:
-    specifier: ^1.1.6
-    version: 1.1.6
 
 devDependencies:
   '@nestjs/cli':
@@ -91,6 +91,9 @@ devDependencies:
   '@types/node':
     specifier: ^20.3.1
     version: 20.3.1
+  '@types/sha.js':
+    specifier: ^2.4.1
+    version: 2.4.1
   '@types/supertest':
     specifier: ^2.0.12
     version: 2.0.12
@@ -1404,6 +1407,12 @@ packages:
     dependencies:
       '@types/http-errors': 2.0.1
       '@types/mime': 3.0.1
+      '@types/node': 20.3.1
+    dev: true
+
+  /@types/sha.js@2.4.1:
+    resolution: {integrity: sha512-QHWKOJ4dkWB0OCfCoOFUZkhvpqUllcPs2WIhYFk7ugAprv3ts0z4nSuHtc0jlWBYLdPwfNRpVpv9pIpFSbYBYQ==}
+    dependencies:
       '@types/node': 20.3.1
     dev: true
 
@@ -6416,10 +6425,6 @@ packages:
     dependencies:
       isexe: 2.0.0
     dev: true
-
-  /whirlpool-hash@1.1.6:
-    resolution: {integrity: sha512-gFW87Y2MLiLdHSp7ZJ5m7cbu0Rvv5tVnzk+roBE7L3fPS5HxjGlwItZ1NH2jDoJ5wTmW6m/FhSEO9bPnUFzJfQ==}
-    dev: false
 
   /windows-release@4.0.0:
     resolution: {integrity: sha512-OxmV4wzDKB1x7AZaZgXMVsdJ1qER1ed83ZrTYd5Bwq2HfJVg3DJS8nqlAG4sMoJ7mu8cuRmLEYyU13BKwctRAg==}

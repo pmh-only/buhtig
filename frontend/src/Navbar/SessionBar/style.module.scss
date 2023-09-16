@@ -1,10 +1,13 @@
 .link {
-  height: 17px;
+  height: 40px;
   display: flex;
+  flex-direction: column;
   gap: 5px;
 
-  a {
-    height: 17px;
+  a, button {
+    cursor: pointer;
+    height: 40px;
+    border: none;
     border-bottom: 1px solid black;
     padding-right: 5px;
 

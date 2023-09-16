@@ -1,5 +1,7 @@
+import { motion } from 'framer-motion'
 import { type FC } from 'react'
 import { Link } from 'react-router-dom'
+import { useCookie } from 'react-use'
 import useSWR from 'swr'
 import style from './style.module.scss'
 
@@ -7,21 +9,37 @@ const fetcher = async (path: string): Promise<{ success: boolean, body: { userId
   await fetch(path).then(async (res) => await res.json())
 
 const SessionBar: FC = () => {
-  const { data } = useSWR('/api/auth/status', fetcher)
+  const { data, mutate } = useSWR('/api/auth/status', fetcher)
+  const [, , deleteSessionToken] = useCookie('SESSION_TOKEN')
+
+  if (data === undefined) {
+    return <div className={style.link}></div>
+  }
+
+  const onLogout = (): void => {
+    deleteSessionToken()
+    void mutate()
+  }
 
   return (
-    <div className={style.link}>
-      {data !== undefined && data.success && (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className={style.link}>
+      {data.success && (
         <>
           <Link to={`/users/${data.body.userId}`}>profile.</Link>
-          <Link to="/logout">logout.</Link>
+          <button onClick={onLogout}>logout.</button>
         </>
       )}
 
-      {data !== undefined && !data.success && (
-        <Link to="/login">login.</Link>
+      {!data.success && (
+        <>
+          <Link to="/regist">regist.</Link>
+          <Link to="/login">login.</Link>
+        </>
       )}
-    </div>
+    </motion.div>
   )
 }
 

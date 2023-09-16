@@ -1,16 +1,14 @@
 import { Injectable } from '@nestjs/common'
-import { type CreateUserDto } from './dto/CreateUserDto'
-import { type UpdateUserDto } from './dto/UpdateUserDto'
-import { Repository } from 'typeorm'
-import { User } from './entities/user.entity'
 import { InjectRepository } from '@nestjs/typeorm'
 import { randomBytes } from 'crypto'
-import { Whirlpool, encoders as whirlpoolEncoder } from 'whirlpool-hash'
+import * as shajs from 'sha.js'
+import { Repository } from 'typeorm'
+import { type CreateUserDto } from './dto/CreateUserDto'
+import { type UpdateUserDto } from './dto/UpdateUserDto'
+import { User } from './entities/user.entity'
 
 @Injectable()
 export class UsersService {
-  private readonly whirlpoolHasher = new Whirlpool()
-
   constructor (
     @InjectRepository(User)
     private readonly users: Repository<User>
@@ -75,8 +73,6 @@ export class UsersService {
   }
 
   public async hashUserPassword (rawPassword: string, salt: string): Promise<string> {
-    const hashed = this.whirlpoolHasher.getHash(salt + rawPassword) as string
-
-    return whirlpoolEncoder.toHex(hashed)
+    return shajs('SHA512').update(salt + rawPassword).digest('hex')
   }
 }
