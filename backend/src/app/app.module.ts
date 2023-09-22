@@ -33,7 +33,7 @@ import { HealthController } from './health.controller'
     UsersModule,
     ReposModule,
     ServeStaticModule.forRoot({
-      serveRoot: '/objects',
+      serveRoot: '/api/objects',
       rootPath: './files'
     })
   ],

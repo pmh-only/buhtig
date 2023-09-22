@@ -77,7 +77,7 @@ func downloadFileFromList (registryDomain, repositoryDirectory string, files map
 	fileHashs = map[string]string{}
 
 	for logical, physical := range files {
-		data, err := downloadHTTP(registryDomain + "/objects/" + physical)
+		data, err := downloadHTTP(registryDomain + "/api/objects/" + physical)
 		if err != nil {
 			log.Fatalf("Error: Failed to retrive file data: %s", logical)
 		}

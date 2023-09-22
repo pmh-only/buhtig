@@ -1,15 +1,13 @@
 import { type FC } from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import IndexPage from '../IndexPage'
+import { BrowserRouter } from 'react-router-dom'
 import Navbar from '../Navbar'
 import SiteContainer from '../SiteContainer'
+import RouterBuiler from './RouterBuilder'
 
 const App: FC = () =>
   <BrowserRouter>
     <SiteContainer navbar={<Navbar />}>
-      <Routes>
-        <Route path="/" element={<IndexPage />} />
-      </Routes>
+      <RouterBuiler />
     </SiteContainer>
   </BrowserRouter>
 

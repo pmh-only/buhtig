@@ -5,6 +5,7 @@ import style from './style.module.scss'
 import { TypeAnimation } from 'react-type-animation'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import PageContainer from '../PageContainer'
 
 interface Repo {
   id: number
@@ -33,7 +34,7 @@ const IndexPage: FC = () => {
   }
 
   return (
-    <div className={style.repo}>
+    <PageContainer className={style.repo}>
       <h1>
         <TypeAnimation
           sequence={[
@@ -69,7 +70,7 @@ const IndexPage: FC = () => {
           </motion.li>
         ))}
       </ul>
-    </div>
+    </PageContainer>
   )
 }
 
