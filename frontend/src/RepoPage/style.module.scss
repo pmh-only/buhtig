@@ -74,6 +74,19 @@
   display: flex;
   gap: 14px;
 
+  &.clickable {
+    cursor: pointer;
+
+    &:hover {
+      background-color: #e3e3e3;
+    }
+  }
+
+  &.item {
+    margin-left: 20px;
+    width: calc(100% - 20px);
+  }
+
   a:hover {
     text-decoration: underline solid black;
   }
