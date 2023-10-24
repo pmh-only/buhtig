@@ -4,6 +4,7 @@ import { Route, Routes, useLocation } from 'react-router-dom'
 import IndexPage from '../../IndexPage'
 import RepoPage from '../../RepoPage'
 import ViewerPage from '../../ViewerPage'
+import UserPage from '../../UserPage'
 
 const RouterBuiler: FC = () => {
   const location = useLocation()
@@ -14,6 +15,7 @@ const RouterBuiler: FC = () => {
           <Route path="/" element={<IndexPage />} />
           <Route path="/repos/:repoId" element={<RepoPage />} />
           <Route path="/viewer/:fileId" element={<ViewerPage />} />
+          <Route path="/users/:userId" element={<UserPage />} />
         </Routes>
       </AnimatePresence>
   )
