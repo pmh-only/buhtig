@@ -125,7 +125,7 @@ const RepoPage: FC = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: i / 20 }}>
             <img src="/file.svg"/>
-            <p><Link to={`/api/viewer/${v.physical}`}>{v.logical}</Link></p>
+            <p><Link to={`/viewer/${v.physical}`}>{v.logical}</Link></p>
             <p className={style.commit}>
               <Link to={`/repos/${repoId}?commitId=${v.commit.id}`}>
                 <img src="/flag.svg" />#{v.commit.id} {v.commit.message}

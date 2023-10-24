@@ -12,6 +12,7 @@
   "dependencies": {
     "@fontsource-variable/inter": "^5.0.8",
     "@fontsource-variable/raleway": "^5.0.9",
+    "@monaco-editor/react": "^4.6.0",
     "clsx": "^2.0.0",
     "framer-motion": "^10.16.4",
     "normalize.css": "^8.0.1",

@@ -9,7 +9,7 @@ const Navbar: FC = () =>
       <img src="/wave.svg" alt="" />
       <Link to="/">
       <h1>Buhtig</h1>
-      <p>the codestore.</p>
+      <p>codestore.</p>
       </Link>
     </div>
 
