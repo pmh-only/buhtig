@@ -7,6 +7,8 @@ func showHelp() {
 	log.Println("\nSubcommands:")
 	log.Println("\ttig auth")
 	log.Println("\tLogin registry with id, accesskey.")
+	log.Println("\n\ttig init")
+	log.Println("\tCreate new repository in working directory.")
 	log.Println("\n\ttig get <repository_id>")
 	log.Println("\tCreate directory and download latest files from registry.")
 	log.Println("\n\ttig down [commit_id]")

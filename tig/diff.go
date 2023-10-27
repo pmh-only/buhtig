@@ -30,12 +30,10 @@ func calculateFileHashs(ignoreFileList []string) (fileHashs map[string]string) {
 		}
 
 		if err != nil {
-			log.Printf("%s: failed to read file info. skip.", simplifiedPath)
 			return nil
 		}
 
 		if info.IsDir() {
-			log.Printf("%s: is a directory. skip.", simplifiedPath)
 			return nil
 		}
 
@@ -55,18 +53,15 @@ func calculateFileHashs(ignoreFileList []string) (fileHashs map[string]string) {
 		})
 
 		if ignoredIndex > -1 {
-			log.Printf("%s: found on '.tignore'. skip.", simplifiedPath)
 			return nil
 		}
 
 		if !strings.Contains(path, ".tignore") && strings.Contains(path, ".tig") {
-			log.Printf("%s: contains '.tig' on path. skip.", simplifiedPath)
 			return nil
 		}
 
 		bytes, err := os.ReadFile(path)
 		if err != nil {
-			log.Printf("%s: failed to read file data (maybe permission denied). skip.", simplifiedPath)
 			return nil
 		}
 

@@ -20,12 +20,14 @@ export class ReposService {
     private readonly commits: Repository<Commit>
   ) {}
 
-  public async createRepo (userId: number, createRepoDto: CreateRepoDto): Promise<void> {
-    await this.repos.insert({
+  public async createRepo (userId: number, createRepoDto: CreateRepoDto): Promise<number> {
+    const creationResult = await this.repos.insert({
       userId,
       name: createRepoDto.name,
       description: createRepoDto.description
     })
+
+    return creationResult.generatedMaps[0].id
   }
 
   public async findAllRepo (): Promise<Repo[]> {

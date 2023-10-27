@@ -23,12 +23,15 @@ export class ReposController {
   @Post()
   @UseGuards(AuthGuard)
   @ApiCookieAuth('SESSION_TOKEN')
-  public async createRepo (@Res({ passthrough: true }) res: Response, @Body() createRepoDto: CreateRepoDto): PResBody {
+  public async createRepo (@Res({ passthrough: true }) res: Response, @Body() createRepoDto: CreateRepoDto): PResBody<{ id: number }> {
     const userId = res.locals.userId
-    await this.reposService.createRepo(userId, createRepoDto)
+    const repositoryId = await this.reposService.createRepo(userId, createRepoDto)
 
     return {
-      success: true
+      success: true,
+      body: {
+        id: repositoryId
+      }
     }
   }
 

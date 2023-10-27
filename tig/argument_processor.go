@@ -13,6 +13,7 @@ func checkSubcommandProvided() bool {
 func loadSubcommandFunctions () {
 	subcommandFunctions["help"] = showHelp
 	subcommandFunctions["auth"] = authRegistry
+	subcommandFunctions["init"] = initRepository
 	subcommandFunctions["get"] = getRepositoryFiles
 	subcommandFunctions["up"] = uploadChanges
 	subcommandFunctions["files"] = showDiffs
