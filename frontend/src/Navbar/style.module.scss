@@ -54,4 +54,30 @@
       opacity: 1;
     }
   }
+  
+  @media only screen and (max-width: 900px) {
+    & {
+      flex-direction: row;
+      position: sticky;
+      top: 0px;
+      left: 0px;
+      width: 100vw;
+      height: auto;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      box-sizing: border-box;
+      background-color: #d4d4d4;
+      
+      .title, a {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      p {
+        display: none;
+      }
+    }
+  }
 }

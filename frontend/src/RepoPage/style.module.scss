@@ -46,6 +46,11 @@
  scrollbar-width: thin;
  scrollbar-color: #eee #e4e4e4;
 
+ @media only screen and (max-width: 900px) {
+  box-sizing: border-box;
+  flex-grow: 1;
+ }
+
   &::-webkit-scrollbar {
     width: 8px;
   }

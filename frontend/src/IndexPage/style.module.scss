@@ -3,19 +3,23 @@
     font-size: 26px;
     width: 100%;
     padding: 15px 10px;
+
+    @media only screen and (max-width: 900px) {
+      display: none;
+    }  
   }
 
   ul {
-   width: 100%;
-   display: flex;
-   flex-direction: column;
-   gap: 10px;
-   height: 100%;
-   padding: 10px;
-   overflow-y: scroll;
-   overflow-x: hidden;
-   scrollbar-width: thin;
-   scrollbar-color: #eee #e4e4e4;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 100%;
+    padding: 10px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #eee #e4e4e4;
 
     &::-webkit-scrollbar {
       width: 8px;
@@ -69,5 +73,11 @@
       opacity: 0.5;
     }
    }
+
+    @media only screen and (max-width: 900px) {
+      & {
+        box-sizing: border-box;
+      }
+    }
   }
 }
