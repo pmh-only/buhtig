@@ -24,6 +24,8 @@ COPY --from=build /build/dist /app
 
 EXPOSE 3000
 
+RUN echo "E404:index.html" > httpd.conf
+
 ENTRYPOINT ["busybox", "httpd"]
 
-CMD ["-f", "-v", "-p", "3000"]
+CMD ["-c", "httpd.conf", "-f", "-v", "-p", "3000"]
